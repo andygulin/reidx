@@ -2,14 +2,13 @@ package com.reidx.web.controller;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.reidx.Constants;
@@ -23,12 +22,12 @@ import com.reidx.vo.SearchParam;
 @Controller
 public class ViewController {
 
-	@Inject
+	@Autowired
 	private ResourceService resourceService;
-	@Inject
+	@Autowired
 	private Configuration configuration;
 
-	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	@GetMapping("/list")
 	public String welcome(@RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model,
 			HttpServletRequest request, SearchParam param) {
 		int offset = (pageNumber - 1) * Constants.DEFAULT_PAGE_SIZE;
@@ -47,19 +46,19 @@ public class ViewController {
 		model.addAttribute("pageList", page.pageList());
 		model.addAttribute("sourceTypes", configuration.getSourceTypes());
 		model.addAttribute("count", count);
-		return "view";
+		return "list";
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@GetMapping("/view/{id}")
 	public String view(@PathVariable("id") String id, Model model) {
 		Resource resource = this.resourceService.findById(id);
 		model.addAttribute("title", resource.getTitle());
 		model.addAttribute("resource", resource);
 		model.addAttribute("sourceTypes", this.configuration.getSourceTypes());
-		return "view_id";
+		return "view";
 	}
 
-	@RequestMapping(value = "/chart", method = RequestMethod.GET)
+	@GetMapping("/chart")
 	public String view(Model model) {
 		List<ResourceCount> resourceCounts = this.resourceService.getResourceCount();
 		StringBuffer buffer = new StringBuffer();

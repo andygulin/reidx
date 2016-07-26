@@ -1,9 +1,8 @@
 package com.reidx.task;
 
-import javax.inject.Inject;
-
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.reidx.service.ReidxService;
@@ -14,7 +13,7 @@ public class ReidxTask {
 
 	private static final Logger LOGGER = Logger.getLogger(ReidxTask.class);
 
-	@Inject
+	@Autowired
 	private ReidxService reidxService;
 
 	public void execute() {

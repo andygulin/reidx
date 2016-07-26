@@ -1,12 +1,12 @@
 package com.reidx.repository;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
-
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,7 +16,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.google.common.collect.Lists;
 import com.reidx.entity.Resource;
 import com.reidx.vo.ResourceCount;
 import com.reidx.vo.SearchParam;
@@ -24,7 +23,7 @@ import com.reidx.vo.SearchParam;
 @Repository
 public class ResourceRepository {
 
-	@Inject
+	@Autowired
 	private MongoTemplate mongoTemplate;
 
 	public void save(Resource resource) {
@@ -84,7 +83,7 @@ public class ResourceRepository {
 	}
 
 	public List<ResourceCount> getResourceCount() {
-		List<ResourceCount> resourceCounts = Lists.newArrayList();
+		List<ResourceCount> resourceCounts = new ArrayList<>();
 		GroupByResults<ResourceCount> groupByResults = this.mongoTemplate.group(
 				Criteria.where("sourceType").gte(0).lte(6), "resource", GroupBy.key("sourceType")
 						.initialDocument("{ count : 0 }").reduceFunction("function( doc, prev) { prev.count += 1 }"),

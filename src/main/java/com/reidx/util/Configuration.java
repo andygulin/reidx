@@ -2,15 +2,14 @@ package com.reidx.util;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Configuration {
 
 	private String theme;
 	private String appKey;
 	private String redixGetUrl;
-	private String wNextIdFile;
-	private String lNextIdFile;
+	private String nextIdFile;
 	private String charset;
 	private Map<Integer, String> sourceTypes;
 
@@ -38,20 +37,12 @@ public class Configuration {
 		this.redixGetUrl = redixGetUrl;
 	}
 
-	public String getwNextIdFile() {
-		return wNextIdFile;
+	public String getNextIdFile() {
+		return nextIdFile;
 	}
 
-	public void setwNextIdFile(String wNextIdFile) {
-		this.wNextIdFile = wNextIdFile;
-	}
-
-	public String getlNextIdFile() {
-		return lNextIdFile;
-	}
-
-	public void setlNextIdFile(String lNextIdFile) {
-		this.lNextIdFile = lNextIdFile;
+	public void setNextIdFile(String nextIdFile) {
+		this.nextIdFile = nextIdFile;
 	}
 
 	public String getCharset() {

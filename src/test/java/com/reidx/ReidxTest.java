@@ -1,6 +1,6 @@
 package com.reidx;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +10,13 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import com.reidx.service.ReidxService;
 import com.reidx.vo.ReidxParam;
 
-@ContextConfiguration(locations = { "classpath:applicationContext.xml",
-		"classpath:applicationContext-mongodb.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext.xml", "classpath:applicationContext-mongodb.xml" })
 public class ReidxTest extends AbstractJUnit4SpringContextTests {
 
-	private static final Logger	LOGGER	= Logger.getLogger(ReidxTest.class);
+	private static final Logger LOGGER = Logger.getLogger(ReidxTest.class);
 
 	@Autowired
-	private ReidxService		reidxService;
+	private ReidxService reidxService;
 
 	@Test
 	public void reidx() {

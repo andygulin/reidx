@@ -24,8 +24,7 @@
 		<property name="theme" value="${configuration.theme}" />
 		<property name="appKey" value="${configuration.appKey}" />
 		<property name="redixGetUrl" value="${configuration.redixGetUrl}" />
-		<property name="wNextIdFile" value="${configuration.wNextIdFile}" />
-		<property name="lNextIdFile" value="${configuration.lNextIdFile}" />
+		<property name="nextIdFile" value="${configuration.nextIdFile}" />
 		<property name="charset" value="${configuration.charset}" />
 		<property name="sourceTypes">
 			<map key-type="java.lang.Integer" value-type="java.lang.String">

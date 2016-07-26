@@ -1,6 +1,6 @@
 package com.reidx.vo;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class ResourceCount {
 	private Integer sourceType;

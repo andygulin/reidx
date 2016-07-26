@@ -1,14 +1,13 @@
 package com.reidx.vo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.google.common.collect.Lists;
 
 public class SearchParam {
 
@@ -67,18 +66,15 @@ public class SearchParam {
 	}
 
 	public String buildUrl() {
-		List<String> url = Lists.newArrayList();
+		List<String> url = new ArrayList<>();
 		if (this.reidxId != null) {
 			url.add("reidxId=" + this.reidxId);
 		}
 		if (this.rdStart != null) {
-			url.add("rdStart="
-					+ DateFormatUtils.format(this.rdStart,
-							"yyyy/MM/dd HH:mm:ss"));
+			url.add("rdStart=" + DateFormatUtils.format(this.rdStart, "yyyy/MM/dd HH:mm:ss"));
 		}
 		if (this.rdEnd != null) {
-			url.add("rdEnd="
-					+ DateFormatUtils.format(this.rdEnd, "yyyy/MM/dd HH:mm:ss"));
+			url.add("rdEnd=" + DateFormatUtils.format(this.rdEnd, "yyyy/MM/dd HH:mm:ss"));
 		}
 		if (this.title != null) {
 			url.add("title=" + this.title);

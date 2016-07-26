@@ -3,7 +3,7 @@ package com.reidx.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Repeat implements Serializable {
 

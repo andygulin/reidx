@@ -6,93 +6,80 @@
 <div class="container-fluid" style="margin-top:20px;">
 	<div class="row">
 		<div class="col-md-12">
-			<h1><a href="${ctx }">舆情浏览</a></p></h1>
-			<form class="form-inline">
-				<div class="form-group">
-					<p class="input-group input-group-sm">
-						<input type="text" name="reidxId" class="form-control" value="${param.reidxId }" placeholder="reidxId" />
-					</p>
-				</div>
-				<div class="form-group">
-					<p class="input-group input-group-sm">
-						<input type="text" name="title" class="form-control" value="${param.title }" placeholder="输入标题" />
-					</p>
-				</div>
-				<div class="form-group">
-					<p class="input-group input-group-sm">
-						<select name="sourceType" class="form-control">
-						<option value="-1" <c:if test="${empty param.sourceType or param.sourceType == -1}">selected="selected"</c:if>>全部</option>
-						<c:forEach var="st" items="${sourceTypes }">
-							<option value="${st.key }" <c:if test="${st.key == param.sourceType }">selected="selected"</c:if>>${st.value }</option>
-						</c:forEach>
-						</select>
-					</p>
-				</div>
-				<div class="form-group">
-					<p class="input-group input-group-sm">
-						<input type="text" name="rdStart" class="form-control" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:ss'});" value="${param.rdStart }" placeholder="开始日期" />
-					</p>~
-					<p class="input-group input-group-sm">
-						<input type="text" name="rdEnd" class="form-control" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:ss'});" value="${param.rdEnd }" placeholder="结束日期" />
-					</p>
-				</div>
-				<div class="form-group m-btn-group-fix">
-					<p class="input-group input-group-sm">
-						<span class="input-group-btn">
-							<button type="submit" class="btn btn-primary">搜索</button>
-						</span>
-					</p>
-				</div>
-				<div class="form-group m-btn-group-fix">
-					<p class="input-group input-group-sm">
-						<span class="input-group-btn">
-							<button type="button" class="btn btn-info" onclick="goChart();">数据分布</button>
-						</span>
-					</p>
-				</div>
-			</form>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<h4>共找到&nbsp;<b>${count }</b>&nbsp;条数据</h4>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<table id="contentTable"
-				class="table table-striped table-hover table-bordered table_font">
-				<thead>
-					<td>reidxId</td>
-					<td>标题</td>
-					<td>媒体</td>
-					<td>类别</td>
-					<td>发布日期</td>
-				</thead>
+			<h1><a href="${ctx }">舆情浏览</a></h1>
+		   	 <table class="table table-bordered">
 				<tbody>
-					<c:forEach var="resource" items="${resources }">
-					<tr id="tr_message_${resource.id }">
-						<td>${resource.reidxId }</td>
-						<td><a href="${ctx }/${resource.id}" target="_blank" title="${resource.title }">
-						<c:if test="${fn:length(resource.title)>30 }">${fn:substring(resource.title,0,30) }...</c:if>
-						<c:if test="${fn:length(resource.title)<30 }">${resource.title }</c:if>
-						</a></td>
-						<td>${resource.mediaName }</td>
-						<td>${sourceTypes[resource.sourceType] }</td>
-						<td><fmt:formatDate value="${resource.releaseDate }" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					</tr>
-					</c:forEach>
+					<tr><td>ID：</td><td>${resource.id }</td></tr>
+					<tr><td>reidxId：</td><td>${resource.reidxId }</td></tr>
+					<tr><td>title：</td><td>${resource.title }</td></tr>
+					<tr><td>url：</td><td><a href="${resource.url }" target="_blank">${resource.url }</a></td></tr>
+					<tr><td>referUrl：</td><td><a href="${resource.referUrl }" target="_blank">${resource.referUrl }</a></td></tr>
+					<tr><td>formatContent：</td><td>${resource.formatContent }</td></tr>
+					<tr><td>author：</td><td>${resource.author }</td></tr>
+					<tr><td>contentMediaName：</td><td>${resource.contentMediaName }</td></tr>
+					<tr><td>words：</td><td>${resource.words }</td></tr>
+					<tr><td>releaseDate：</td><td><fmt:formatDate value="${resource.releaseDate }" pattern="yyyy-MM-dd HH:mm:ss" /></td></tr>
+					<tr><td>addTime：</td><td><fmt:formatDate value="${resource.addTime }" pattern="yyyy-MM-dd HH:mm:ss" /></td></tr>
+					<tr><td>navigation：</td><td>${resource.navigation }</td></tr>
+					<tr><td>mediaId：</td><td>${resource.mediaId }</td></tr>
+					<tr><td>mediaName：</td><td>${resource.mediaName }</td></tr>
+					<tr><td>mediaUrl：</td><td>${resource.mediaUrl }</td></tr>
+					<tr><td>sourceType：</td><td>${sourceTypes[resource.sourceType] }</td></tr>
+					<tr><td>keywords：</td><td>${resource.keywords }</td></tr>
+					<tr><td>keywordsCode：</td><td>${resource.keywordsCode }</td></tr>
+					<tr><td>pictureList：</td><td>
+						<c:if test="${not empty resource.pictureList and fn:length(resource.pictureList)>0 }">
+							<c:forEach var="pl" items="${resource.pictureList }">
+								<img src="${pl }" /><br /><br />
+							</c:forEach>
+						</c:if>
+					</td></tr>
+					<tr><td>ver</td><td>${resource.ver }</td></tr>
+					<tr><td>_abstract：</td><td>${resource._abstract }</td></tr>
+					<tr><td>relativity：</td><td>${resource.relativity }</td></tr>
+					<tr><td>relavancy：</td><td>${resource.relavancy }</td></tr>
+					<tr><td>relatedFields：</td><td>${resource.relatedFields }</td></tr>
+					<tr><td>relatedInfos：</td><td>
+					<c:if test="${fn:length(resource.relatedInfos)>0 }">
+							<c:forEach var="ri" items="${resource.relatedInfos }">
+								${ri.tag } -> ${ri.clue }<br /><br />
+							</c:forEach>
+					</c:if>
+					</td></tr>
+					<tr><td>repeatCount：</td><td>${resource.repeatCount }</td></tr>
+					<tr><td>commentCount：</td><td>${resource.commentCount }</td></tr>
+					<tr><td>clickCount：</td><td>${resource.clickCount }</td></tr>
+					<tr><td>quoteCount：</td><td>${resource.quoteCount }</td></tr>
+					<tr><td>titleCrc：</td><td>${resource.titleCrc }</td></tr>
+					<tr><td>urlCrc：</td><td>${resource.urlCrc }</td></tr>
+					<tr><td>contentCrc：</td><td>${resource.contentCrc }</td></tr>
+					<tr><td>repeats：</td><td>
+						<c:if test="${fn:length(resource.repeats)>0 }">
+							<table class="table table-bordered">
+							<c:forEach var="rp" items="${resource.repeats }">
+								<tbody>
+									<tr><td>reidxId：</td><td>${rp.reidxId }</td></tr>
+									<tr><td>url：</td><td>${rp.url }</td></tr>
+									<tr><td>referUrl：</td><td>${rp.referUrl }</td></tr>
+									<tr><td>author：</td><td>${rp.author }</td></tr>
+									<tr><td>releaseDate：</td><td><fmt:formatDate value="${rp.releaseDate }" pattern="yyyy-MM-dd HH:mm:ss" /></td></tr>
+									<tr><td>addTime：</td><td><fmt:formatDate value="${rp.addTime }" pattern="yyyy-MM-dd HH:mm:ss" /></td></tr>
+									<tr><td>mediaId：</td><td>${rp.mediaId }</td></tr>
+									<tr><td>mediaName：</td><td>${rp.mediaName }</td></tr>
+									<tr><td>mediaUrl：</td><td>${rp.mediaUrl }</td></tr>
+									<tr><td>titleCrc：</td><td>${rp.titleCrc }</td></tr>
+									<tr><td>urlCrc：</td><td>${rp.urlCrc }</td></tr>
+									<tr><td>contentCrc：</td><td>${rp.contentCrc }</td></tr>
+								</tbody>
+							</c:forEach>
+							</table>
+						</c:if>
+					</td></tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
-	${pageList }
 </div>
 
-<script type="text/javascript">
-function goChart(){
-	window.location.href = '${ctx }/chart';
-}
-</script>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

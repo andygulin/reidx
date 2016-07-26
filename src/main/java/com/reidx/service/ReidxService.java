@@ -12,24 +12,21 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.google.common.collect.Lists;
 import com.reidx.entity.ReidxLog;
 import com.reidx.entity.RelatedInfo;
 import com.reidx.entity.Repeat;
@@ -43,25 +40,22 @@ import com.reidx.vo.ReidxParam;
 @Service
 public class ReidxService {
 
-	@Inject
+	@Autowired
 	private ResourceRepository resourceRepository;
-	@Inject
+	@Autowired
 	private ReidxLogRepository reidxLogRepository;
-	@Inject
+	@Autowired
 	private Configuration configuration;
 
 	public List<Resource> reidx(ReidxParam param) {
-		List<Resource> resources = Lists.newArrayList();
-		String requestUrl = this.configuration.getRedixGetUrl()
-				+ "?appkey=%s&kid=%s&id=%s&num=%s&type=%s";
-		requestUrl = String.format(requestUrl, this.configuration.getAppKey(),
-				this.configuration.getTheme(), param.getReidxId(),
-				param.getNum(), param.getType());
+		List<Resource> resources = new ArrayList<>();
+		String requestUrl = this.configuration.getRedixGetUrl() + "?appkey=%s&kid=%s&id=%s&num=%s&type=%s";
+		requestUrl = String.format(requestUrl, this.configuration.getAppKey(), this.configuration.getTheme(),
+				param.getReidxId(), param.getNum(), param.getType());
 		SAXReader reader = new SAXReader(false);
 		reader.setEntityResolver(new EntityResolver() {
 			@Override
-			public InputSource resolveEntity(String publicId, String systemId)
-					throws SAXException, IOException {
+			public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
 				return new InputSource(new StringReader(""));
 			}
 		});
@@ -82,8 +76,7 @@ public class ReidxService {
 			resource.setUrl(checkNull(node, "url"));
 			resource.setReferUrl(checkNull(node, "refer_url"));
 			resource.setVer(NumberUtils.toInt(checkNull(node, "ver")));
-			resource.setRelatedFields(NumberUtils.toInt(checkNull(node,
-					"related_fields")));
+			resource.setRelatedFields(NumberUtils.toInt(checkNull(node, "related_fields")));
 			resource.setKeywordsCode(checkNull(node, "keywords_code"));
 			String title = checkNull(node, "title");
 			if (StringUtils.isBlank(title) || StringUtils.isEmpty(title)) {
@@ -97,10 +90,10 @@ public class ReidxService {
 			resource.setContentMediaName(checkNull(node, "content_media_name"));
 			resource.setWords(NumberUtils.toInt(checkNull(node, "words")));
 			try {
-				resource.setReleaseDate(DateUtils.parseDate(
-						checkNull(node, "release_date"), "yyyy-MM-dd HH:mm:ss"));
-				resource.setAddTime(DateUtils.parseDate(
-						checkNull(node, "add_time"), "yyyy-MM-dd HH:mm:ss"));
+				resource.setReleaseDate(
+						DateUtils.parseDate(checkNull(node, "release_date"), new String[] { "yyyy-MM-dd HH:mm:ss" }));
+				resource.setAddTime(
+						DateUtils.parseDate(checkNull(node, "add_time"), new String[] { "yyyy-MM-dd HH:mm:ss" }));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -108,22 +101,15 @@ public class ReidxService {
 			resource.setMediaId(checkNull(node, "media_id"));
 			resource.setMediaName(checkNull(node, "media_name"));
 			resource.setMediaUrl(checkNull(node, "media_url"));
-			resource.setSourceType(NumberUtils.toInt(checkNull(node,
-					"source_type")));
+			resource.setSourceType(NumberUtils.toInt(checkNull(node, "source_type")));
 			resource.set_abstract(checkNull(node, "abstract"));
 			resource.setKeywords(checkNull(node, "keywords"));
-			resource.setRelativity(NumberUtils.toInt(checkNull(node,
-					"relativity")));
-			resource.setRelavancy(NumberUtils
-					.toInt(checkNull(node, "relavancy")));
-			resource.setRepeatCount(NumberUtils.toInt(checkNull(node,
-					"repeat_count")));
-			resource.setCommentCount(NumberUtils.toInt(checkNull(node,
-					"comment_count")));
-			resource.setClickCount(NumberUtils.toInt(checkNull(node,
-					"click_count")));
-			resource.setQuoteCount(NumberUtils.toInt(checkNull(node,
-					"quote_count")));
+			resource.setRelativity(NumberUtils.toInt(checkNull(node, "relativity")));
+			resource.setRelavancy(NumberUtils.toInt(checkNull(node, "relavancy")));
+			resource.setRepeatCount(NumberUtils.toInt(checkNull(node, "repeat_count")));
+			resource.setCommentCount(NumberUtils.toInt(checkNull(node, "comment_count")));
+			resource.setClickCount(NumberUtils.toInt(checkNull(node, "click_count")));
+			resource.setQuoteCount(NumberUtils.toInt(checkNull(node, "quote_count")));
 			resource.setUrlCrc(checkNull(node, "url_crc"));
 			resource.setTitleCrc(checkNull(node, "title_crc"));
 			resource.setContentCrc(checkNull(node, "content_crc"));
@@ -161,7 +147,7 @@ public class ReidxService {
 		List<Node> nodes = node.selectNodes("repeat/resource");
 		List<Repeat> repeats = null;
 		if (nodes != null && nodes.size() > 0) {
-			repeats = Lists.newArrayListWithCapacity(nodes.size());
+			repeats = new ArrayList<>(nodes.size());
 			for (Node n : nodes) {
 				Repeat repeat = new Repeat();
 				repeat.setReidxId(checkNull(n, "id"));
@@ -169,11 +155,10 @@ public class ReidxService {
 				repeat.setReferUrl(checkNull(n, "refer_url"));
 				repeat.setAuthor(checkNull(n, "author"));
 				try {
-					repeat.setReleaseDate(DateUtils
-							.parseDate(checkNull(n, "release_date"),
-									"yyyy-MM-dd HH:mm:ss"));
-					repeat.setAddTime(DateUtils.parseDate(
-							checkNull(n, "add_time"), "yyyy-MM-dd HH:mm:ss"));
+					repeat.setReleaseDate(
+							DateUtils.parseDate(checkNull(n, "release_date"), new String[] { "yyyy-MM-dd HH:mm:ss" }));
+					repeat.setAddTime(
+							DateUtils.parseDate(checkNull(n, "add_time"), new String[] { "yyyy-MM-dd HH:mm:ss" }));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -196,7 +181,7 @@ public class ReidxService {
 		List<Node> nodes = node.selectNodes("related_info/item");
 		List<RelatedInfo> clues = null;
 		if (nodes != null && nodes.size() > 0) {
-			clues = Lists.newArrayListWithCapacity(nodes.size());
+			clues = new ArrayList<>(nodes.size());
 			for (Node n : nodes) {
 				RelatedInfo relatedInfo = new RelatedInfo();
 				relatedInfo.setClue(checkNull(n, "clue"));
@@ -209,25 +194,20 @@ public class ReidxService {
 	}
 
 	public void writeNextIdFile(String next_id) {
-		String path = SystemUtils.IS_OS_WINDOWS ? this.configuration
-				.getwNextIdFile() : this.configuration.getlNextIdFile();
+		File file = new File(FileUtils.getUserDirectoryPath(), this.configuration.getNextIdFile());
 		try {
-			FileUtils.writeStringToFile(new File(path), next_id,
-					Charset.forName(this.configuration.getCharset()), false);
+			FileUtils.writeStringToFile(file, next_id, Charset.forName(this.configuration.getCharset()), false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public String readNextIdFile() {
-		String path = SystemUtils.IS_OS_WINDOWS ? this.configuration
-				.getwNextIdFile() : this.configuration.getlNextIdFile();
-		File file = new File(path);
+		File file = new File(FileUtils.getUserDirectoryPath(), this.configuration.getNextIdFile());
 		String next_id = "";
 		if (file.exists()) {
 			try {
-				next_id = FileUtils.readFileToString(file,
-						Charset.forName(this.configuration.getCharset()));
+				next_id = FileUtils.readFileToString(file, Charset.forName(this.configuration.getCharset()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

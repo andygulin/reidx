@@ -2,8 +2,7 @@ package com.reidx.service;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.reidx.entity.Resource;
@@ -14,11 +13,10 @@ import com.reidx.vo.SearchParam;
 @Service
 public class ResourceService {
 
-	@Inject
+	@Autowired
 	private ResourceRepository resourceRepository;
 
-	public List<Resource> findByPage(int pageNumber, int pageSize,
-			SearchParam param) {
+	public List<Resource> findByPage(int pageNumber, int pageSize, SearchParam param) {
 		return this.resourceRepository.findByPage(pageNumber, pageSize, param);
 	}
 
