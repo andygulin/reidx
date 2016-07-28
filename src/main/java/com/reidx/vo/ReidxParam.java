@@ -35,8 +35,6 @@ public class ReidxParam implements Serializable {
 
 	@Override
 	public String toString() {
-		return "id:" + this.reidxId + " -> " + "num:" + this.num + " -> "
-				+ "type:" + this.type;
+		return "id:" + this.reidxId + " -> " + "num:" + this.num + " -> " + "type:" + this.type;
 	}
-
 }

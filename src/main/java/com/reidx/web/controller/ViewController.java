@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.reidx.Constants;
 import com.reidx.entity.Resource;
-import com.reidx.service.ResourceService;
+import com.reidx.repository.ResourceRepository;
 import com.reidx.util.Configuration;
 import com.reidx.util.Page;
 import com.reidx.vo.ResourceCount;
@@ -23,9 +23,9 @@ import com.reidx.vo.SearchParam;
 public class ViewController {
 
 	@Autowired
-	private ResourceService resourceService;
-	@Autowired
 	private Configuration configuration;
+	@Autowired
+	private ResourceRepository resourceRepository;
 
 	@GetMapping("/list")
 	public String welcome(@RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model,
@@ -34,12 +34,12 @@ public class ViewController {
 		Page page = new Page();
 		page.setUrl(request.getRequestURI() + param.buildUrl());
 		page.setPageNo(pageNumber);
-		long count = this.resourceService.getCount(param);
+		long count = this.resourceRepository.getCount(param);
 		page.setCount(count);
 		page.setRowPerPage(Constants.DEFAULT_PAGE_SIZE);
 		page.setShowNum(10);
 
-		List<Resource> resources = this.resourceService.findByPage(offset, Constants.DEFAULT_PAGE_SIZE, param);
+		List<Resource> resources = this.resourceRepository.findByPage(offset, Constants.DEFAULT_PAGE_SIZE, param);
 
 		model.addAttribute("resources", resources);
 		model.addAttribute("title", "舆情浏览");
@@ -51,7 +51,7 @@ public class ViewController {
 
 	@GetMapping("/view/{id}")
 	public String view(@PathVariable("id") String id, Model model) {
-		Resource resource = this.resourceService.findById(id);
+		Resource resource = this.resourceRepository.findById(id);
 		model.addAttribute("title", resource.getTitle());
 		model.addAttribute("resource", resource);
 		model.addAttribute("sourceTypes", this.configuration.getSourceTypes());
@@ -60,7 +60,7 @@ public class ViewController {
 
 	@GetMapping("/chart")
 	public String view(Model model) {
-		List<ResourceCount> resourceCounts = this.resourceService.getResourceCount();
+		List<ResourceCount> resourceCounts = this.resourceRepository.getResourceCount();
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("[[");
 		int i = 1;

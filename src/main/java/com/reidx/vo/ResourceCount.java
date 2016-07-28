@@ -26,5 +26,4 @@ public class ResourceCount {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
 }

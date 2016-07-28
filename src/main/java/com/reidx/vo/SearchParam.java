@@ -84,5 +84,4 @@ public class SearchParam {
 		}
 		return "?" + StringUtils.join(url, "&");
 	}
-
 }

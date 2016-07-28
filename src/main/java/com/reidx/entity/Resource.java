@@ -323,5 +323,4 @@ public class Resource implements Serializable {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
 }

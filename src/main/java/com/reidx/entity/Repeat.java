@@ -122,5 +122,4 @@ public class Repeat implements Serializable {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
 }
