@@ -22,16 +22,12 @@ public class ReidxTest extends AbstractJUnit4SpringContextTests {
 	public void reidx() {
 		for (int i = 1; i <= 10; i++) {
 			String next_id = reidxService.readNextIdFile();
-			ReidxParam param = new ReidxParam();
 			if (StringUtils.isBlank(next_id) || StringUtils.isEmpty(next_id)) {
 				next_id = reidxService.getInitNextId();
 			}
-			param.setReidxId(next_id);
-			param.setNum("50");
-			param.setType("");
+			ReidxParam param = new ReidxParam(next_id, "50", "");
 			reidxService.reidx(param);
 			LOGGER.info(i + " reidx -> " + param);
 		}
 	}
-
 }

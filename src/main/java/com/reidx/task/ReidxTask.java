@@ -18,15 +18,11 @@ public class ReidxTask {
 
 	public void execute() {
 		String next_id = reidxService.readNextIdFile();
-		ReidxParam param = new ReidxParam();
 		if (StringUtils.isBlank(next_id) || StringUtils.isEmpty(next_id)) {
 			next_id = reidxService.getInitNextId();
 		}
-		param.setReidxId(next_id);
-		param.setNum("50");
-		param.setType("");
+		ReidxParam param = new ReidxParam(next_id, "50", "");
 		this.reidxService.reidx(param);
-
 		LOGGER.info("reidx -> " + param);
 	}
 }

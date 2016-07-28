@@ -55,22 +55,7 @@ public class ReidxServiceImpl implements ReidxService {
 		String requestUrl = this.configuration.getRedixGetUrl() + "?appkey=%s&kid=%s&id=%s&num=%s&type=%s";
 		requestUrl = String.format(requestUrl, this.configuration.getAppKey(), this.configuration.getTheme(),
 				param.getReidxId(), param.getNum(), param.getType());
-		SAXReader reader = new SAXReader(false);
-		reader.setEntityResolver(new EntityResolver() {
-			@Override
-			public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
-				return new InputSource(new StringReader(""));
-			}
-		});
-		Document doc = null;
-		try {
-			doc = reader.read(new URL(requestUrl));
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
-
+		Document doc = getDocument(requestUrl);
 		@SuppressWarnings("unchecked")
 		List<Node> nodes = doc.selectNodes("//resource");
 		for (Node node : nodes) {
@@ -92,14 +77,8 @@ public class ReidxServiceImpl implements ReidxService {
 			resource.setAuthor(checkNull(node, "author"));
 			resource.setContentMediaName(checkNull(node, "content_media_name"));
 			resource.setWords(NumberUtils.toInt(checkNull(node, "words")));
-			try {
-				resource.setReleaseDate(
-						DateUtils.parseDate(checkNull(node, "release_date"), new String[] { "yyyy-MM-dd HH:mm:ss" }));
-				resource.setAddTime(
-						DateUtils.parseDate(checkNull(node, "add_time"), new String[] { "yyyy-MM-dd HH:mm:ss" }));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			resource.setReleaseDate(convertDate(checkNull(node, "release_date")));
+			resource.setAddTime(convertDate(checkNull(node, "add_time")));
 			resource.setNavigation(checkNull(node, "navigation"));
 			resource.setMediaId(checkNull(node, "media_id"));
 			resource.setMediaName(checkNull(node, "media_name"));
@@ -132,6 +111,33 @@ public class ReidxServiceImpl implements ReidxService {
 		return resources;
 	}
 
+	private Document getDocument(String requestUrl) {
+		SAXReader reader = new SAXReader(false);
+		reader.setEntityResolver(new EntityResolver() {
+			@Override
+			public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+				return new InputSource(new StringReader(""));
+			}
+		});
+		Document doc = null;
+		try {
+			doc = reader.read(new URL(requestUrl));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		return doc;
+	}
+
+	private Date convertDate(String date_str) {
+		try {
+			return DateUtils.parseDate(date_str, new String[] { "yyyy-MM-dd HH:mm:ss" });
+		} catch (ParseException e) {
+			return null;
+		}
+	}
+
 	private String checkNull(Node node, String key) {
 		return node.selectSingleNode(key) != null ? node.selectSingleNode(key).getText() : StringUtils.EMPTY;
 	}
@@ -147,26 +153,20 @@ public class ReidxServiceImpl implements ReidxService {
 		List<Repeat> repeats = null;
 		if (CollectionUtils.isNotEmpty(nodes)) {
 			repeats = new ArrayList<>(nodes.size());
-			for (Node n : nodes) {
+			for (Node _node : nodes) {
 				Repeat repeat = new Repeat();
-				repeat.setReidxId(checkNull(n, "id"));
-				repeat.setUrl(checkNull(n, "url"));
-				repeat.setReferUrl(checkNull(n, "refer_url"));
-				repeat.setAuthor(checkNull(n, "author"));
-				try {
-					repeat.setReleaseDate(
-							DateUtils.parseDate(checkNull(n, "release_date"), new String[] { "yyyy-MM-dd HH:mm:ss" }));
-					repeat.setAddTime(
-							DateUtils.parseDate(checkNull(n, "add_time"), new String[] { "yyyy-MM-dd HH:mm:ss" }));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				repeat.setMediaId(checkNull(n, "media_id"));
-				repeat.setMediaName(checkNull(n, "media_name"));
-				repeat.setMediaUrl(checkNull(n, "media_url"));
-				repeat.setTitleCrc(checkNull(n, "title_crc"));
-				repeat.setUrlCrc(checkNull(n, "url_crc"));
-				repeat.setContentCrc(checkNull(n, "content_crc"));
+				repeat.setReidxId(checkNull(_node, "id"));
+				repeat.setUrl(checkNull(_node, "url"));
+				repeat.setReferUrl(checkNull(_node, "refer_url"));
+				repeat.setAuthor(checkNull(_node, "author"));
+				repeat.setReleaseDate(convertDate(checkNull(_node, "release_date")));
+				repeat.setAddTime(convertDate(checkNull(_node, "add_time")));
+				repeat.setMediaId(checkNull(_node, "media_id"));
+				repeat.setMediaName(checkNull(_node, "media_name"));
+				repeat.setMediaUrl(checkNull(_node, "media_url"));
+				repeat.setTitleCrc(checkNull(_node, "title_crc"));
+				repeat.setUrlCrc(checkNull(_node, "url_crc"));
+				repeat.setContentCrc(checkNull(_node, "content_crc"));
 
 				repeats.add(repeat);
 			}
@@ -181,10 +181,10 @@ public class ReidxServiceImpl implements ReidxService {
 		List<RelatedInfo> clues = null;
 		if (CollectionUtils.isNotEmpty(nodes)) {
 			clues = new ArrayList<>(nodes.size());
-			for (Node n : nodes) {
+			for (Node _node : nodes) {
 				RelatedInfo relatedInfo = new RelatedInfo();
-				relatedInfo.setClue(checkNull(n, "clue"));
-				relatedInfo.setTag(checkNull(n, "tag"));
+				relatedInfo.setClue(checkNull(_node, "clue"));
+				relatedInfo.setTag(checkNull(_node, "tag"));
 				clues.add(relatedInfo);
 			}
 			return clues;

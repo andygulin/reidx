@@ -2,12 +2,25 @@ package com.reidx.vo;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 public class ReidxParam implements Serializable {
 
 	private static final long serialVersionUID = 6842483948219256910L;
 	private String reidxId;
 	private String num;
 	private String type;
+
+	public ReidxParam() {
+
+	}
+
+	public ReidxParam(String reidxId, String num, String type) {
+		super();
+		this.reidxId = reidxId;
+		this.num = num;
+		this.type = type;
+	}
 
 	public String getReidxId() {
 		return reidxId;
@@ -35,6 +48,6 @@ public class ReidxParam implements Serializable {
 
 	@Override
 	public String toString() {
-		return "id:" + this.reidxId + " -> " + "num:" + this.num + " -> " + "type:" + this.type;
+		return ToStringBuilder.reflectionToString(this);
 	}
 }
