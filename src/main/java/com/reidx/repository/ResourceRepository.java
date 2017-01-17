@@ -1,8 +1,7 @@
 package com.reidx.repository;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 import com.reidx.entity.Resource;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface ResourceRepository extends PagingAndSortingRepository<Resource, String> {
 

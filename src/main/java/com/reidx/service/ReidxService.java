@@ -1,17 +1,17 @@
 package com.reidx.service;
 
-import java.util.List;
-
 import com.reidx.entity.Resource;
 import com.reidx.vo.ReidxParam;
 
+import java.util.List;
+
 public interface ReidxService {
 
-	List<Resource> reidx(ReidxParam param);
+    List<Resource> reidx(ReidxParam param);
 
-	void writeNextIdFile(String next_id);
+    void writeNextIdFile(String next_id);
 
-	String readNextIdFile();
+    String readNextIdFile();
 
-	String getInitNextId();
+    String getInitNextId();
 }
